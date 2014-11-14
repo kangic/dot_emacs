@@ -47,6 +47,9 @@
 ; line-number-mode
 (global-linum-mode t)
 
+; column-number-mode
+(setq column-number-mode t)
+
 ; flymake-google-cpplint
 (require 'flymake-google-cpplint)
 
