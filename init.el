@@ -84,3 +84,17 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
+; change short key for ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(autoload 'ibuffer "ibuffer" "List buffers." t)
+
+; sr-speedbar
+(require 'sr-speedbar)
+
+; switch to header file
+(defun my:switch-to-headerfile()
+  (global-set-key (kbd "C-c o") 'ff-find-other-file)
+)
+(add-hook 'c-mode-hook 'my:switch-to-headerfile)
+(add-hook 'c++-mode-hook 'my:switch-to-headerfile)
