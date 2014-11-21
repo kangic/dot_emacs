@@ -14,4 +14,5 @@ My emacs settings
         * it depends on cpplint.py
     * google-c-style
     * flymake-cursor
+    * sr-speedbar
 
