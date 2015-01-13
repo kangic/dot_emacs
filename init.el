@@ -92,6 +92,19 @@
 ; sr-speedbar
 (require 'sr-speedbar)
 
+(setq sr-speedbar-right-side nil)
+(setq sr-speedbar-auto-refresh t)
+
+(defun my:toggle-speedbar ()
+  "Toggle sr-speedbar and select"
+  (interactive)
+  (progn
+    (sr-speedbar-toggle)
+    (if (sr-speedbar-exist-p)
+        (sr-speedbar-select-window))))
+
+(global-set-key (kbd "C-x p") 'my:toggle-speedbar)
+
 ; switch to header file
 (defun my:switch-to-headerfile()
   (global-set-key (kbd "C-c o") 'ff-find-other-file)
