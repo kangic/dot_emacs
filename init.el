@@ -124,3 +124,16 @@
           (lambda ()
             (local-set-key (kbd "M-.") 'gtags-find-tag)
             (local-set-key (kbd "M-,") 'gtags-find-rtag)))
+
+;; move-window by meta key
+(windmove-default-keybindings 'meta)
+
+;; revive
+(require 'revive)
+(autoload 'save-current-configuration "revive" "Save status" t)
+(autoload 'resume "revive" "Resume Emacs" t)
+(autoload 'wipe "revive" "Wipe Emacs" t)
+
+(define-key ctl-x-map "S" 'save-current-configuration)
+(define-key ctl-x-map "F" 'resume)
+(define-key ctl-x-map "K" 'wipe)
