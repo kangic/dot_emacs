@@ -3,7 +3,8 @@ My emacs settings
 
 # Setup #
 * Run to command
-    * git clone --recursive https://github.com/kangic/.emacs.d.git
+    * git clone git@github.com:kangic/dot_emacs.git ~/works/github/
+    * ln -s ~/works/github/dot_emacs ~/.emacs.d
 
 * Installed Package List
     * auto-complete
