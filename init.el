@@ -50,6 +50,19 @@
 ; column-number-mode
 (setq column-number-mode t)
 
+; column-width
+(setq-default fill-column 80)
+
+; hangul
+(set-language-environment "Korean")
+(prefer-coding-system 'utf-8)
+(global-set-key (kbd "<S-kana>") 'toggle-input-method)
+
+; font
+(set-face-font 'default "Bitstream Vera Sans Mono-12")
+(set-fontset-font "fontset-default" '(#x1100 . #xffdc)
+                   "NanumGothic_Coding-15")
+
 ; flymake-google-cpplint
 (require 'flymake-google-cpplint)
 
@@ -124,6 +137,45 @@
           (lambda ()
             (local-set-key (kbd "M-.") 'gtags-find-tag)
             (local-set-key (kbd "M-,") 'gtags-find-rtag)))
+
+;; create or update to start
+(defun gtags-create-or-update ()
+	"create or update the gnu global tag file"
+	(interactive)
+	(if (not (= 0 (call-process "global" nil nil nil " -p"))) ; tagfile doesn't exist?
+		(let ((olddir default-directory)
+					(topdir (read-directory-name
+										"gtags: top of source tree:" default-directory)))
+			(cd topdir)
+			(shell-command "gtags && echo 'created tagfile'")
+			(cd olddir)) ; restore
+		;;  tagfile already exists; update it
+		(shell-command "global -u && echo 'updated tagfile'")))
+
+(add-hook 'c-mode-common-hook
+					(lambda ()
+						(gtags-create-or-update)))
+
+;; TAGS auto-update
+(defun gtags-update-single (filename)
+	"Update Gtags database for changes in a single file"
+	(interactive)
+	(start-process "update-gtags" "update-gtags" "bash" "-c" (concat "cd " (gtags-root-dir) " ; gtags --single-update " filename )))
+
+(defun gtags-update-current-file()
+	(interactive)
+	(defvar filename)
+	(setq filename (replace-regexp-in-string (gtags-root-dir) "." (buffer-file-name (current-buffer))))
+	(gtags-update-single filename)
+	(message "Gtags updated for %s" filename))
+
+(defun gtags-update-hook()
+	"Update GTAGS file incrementally upon saving a file"
+	(when gtags-mode
+		(when (gtags-root-dir)
+			(gtags-update-current-file))))
+
+(add-hook 'after-save-hook 'gtags-update-hook)
 
 ;; move-window by meta key
 (windmove-default-keybindings 'meta)
