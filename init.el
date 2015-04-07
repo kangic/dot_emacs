@@ -3,6 +3,9 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
+; maximize
+;(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ; start auto-complete with emacs
 (require 'auto-complete)
 ; do default config for auto-compelete
@@ -17,8 +20,6 @@
 (defun my:ac-c-header-init()
   (require 'auto-complete-c-headers)
   (add-to-list 'ac-sources 'ac-source-c-headers)
-  (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.7/include")
-  (add-to-list 'achead:include-directories '"/usr/include")
 )
 ; call this function from c/c++ hooks
 (add-hook 'c++-mode-hook 'my:ac-c-header-init)
@@ -102,6 +103,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(ecb-options-version "2.40")
  '(flymake-google-cpplint-linelength "120")
  '(flymake-google-cpplint-verbose "3")
  '(help-at-pt-display-when-idle (quote (flymake-overlay)) nil (help-at-pt))
@@ -195,3 +197,23 @@
 (require 'magit)
 (setq magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
+
+;; ecb
+(require 'ecb)
+(require 'ecb-autoloads)
+
+(setq ecb-tip-of-the-day nil)
+(setq ecb-layout-name "left3")
+(setq ecb-show-sources-in-directories-buffer 'always)
+(setq ecb-compile-window-height 6)
+(setq ecb-windows-width 32)
+
+;; customize the keys for ECB
+(define-key ecb-mode-map (kbd "M-1") 'ecb-goto-window-directories)
+(define-key ecb-mode-map (kbd "M-2") 'ecb-goto-window-sources)
+(define-key ecb-mode-map (kbd "M-3") 'ecb-goto-window-methods)
+(define-key ecb-mode-map (kbd "M-4") 'ecb-goto-window-history)
+(define-key ecb-mode-map (kbd "M-5") 'ecb-goto-window-compilation)
+(define-key ecb-mode-map (kbd "M-0") 'ecb-goto-window-edit1)
+
+(ecb-activate)
