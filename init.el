@@ -18,6 +18,7 @@
   (require 'auto-complete-c-headers)
   (add-to-list 'ac-sources 'ac-source-c-headers)
   (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.7/include")
+  (add-to-list 'achead:include-directories '"/usr/include")
 )
 ; call this function from c/c++ hooks
 (add-hook 'c++-mode-hook 'my:ac-c-header-init)
@@ -26,6 +27,10 @@
 ; iedit-mode
 (require 'iedit)
 (define-key global-map (kbd "C-c ;") 'iedit-mode)
+
+; ido-mode
+(require 'ido)
+(setq ido-mode 1)
 
 ; turn on Semantic
 (semantic-mode 1)
@@ -38,20 +43,39 @@
 ; turn on automatic reparsing of open buffer in semantic
 (global-semantic-idle-scheduler-mode 1)
 
+(ede-cpp-root-project "eznetpp"
+                :name "eznetpp library"
+                :file "~/works/github/eznetpp/CMakeLists.txt"
+                :include-path '("/include"
+                                "/test"
+                               )
+                :system-include-path '("/usr/include"))
+
 ; color-theme
 (load-theme 'wombat t)
 
-; tool-bar off
+; tool-bar / scroll-bar off
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
 
 ; line-number-mode
 (global-linum-mode t)
+
+(show-paren-mode 1)
+(setq show-paren-delay 0)
 
 ; column-number-mode
 (setq column-number-mode t)
 
 ; column-width
 (setq-default fill-column 80)
+
+; alias to asnwer yes or no
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+; don't save backup files
+(setq make-backup-files nil)
 
 ; hangul
 (set-language-environment "Korean")
@@ -73,9 +97,15 @@
 (executable-find "cpplint.py")
 
 (custom-set-variables
- '(flymake-google-cpplint-verbose "3")
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(flymake-google-cpplint-linelength "120")
-)
+ '(flymake-google-cpplint-verbose "3")
+ '(help-at-pt-display-when-idle (quote (flymake-overlay)) nil (help-at-pt))
+ '(help-at-pt-time-delay 0.9))
 
 ; google-c-style
 (require 'google-c-style)
@@ -84,10 +114,6 @@
 
 ; flymake-cursor
 (require 'flymake-cursor)
-
-(custom-set-variables
- '(help-at-pt-time-delay 0.9)
- '(help-at-pt-display-when-idle '(flymake-overlay)))
 
 ; markdown-mode
 (autoload 'markdown-mode "markdown-mode"
@@ -129,53 +155,14 @@
 (setq load-path (cons "/usr/share/emacs24/site-lisp/global/gtags.el" load-path))
 (autoload 'gtags-mode "gtags" "" t)
 (add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (gtags-mode 1)))
+  (lambda ()
+    (gtags-mode 1)))
 
 ;; short-key bindings
 (add-hook 'gtags-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-.") 'gtags-find-tag)
+	  (lambda ()
+	    (local-set-key (kbd "M-.") 'gtags-find-tag)
             (local-set-key (kbd "M-,") 'gtags-find-rtag)))
-
-;; create or update to start
-(defun gtags-create-or-update ()
-	"create or update the gnu global tag file"
-	(interactive)
-	(if (not (= 0 (call-process "global" nil nil nil " -p"))) ; tagfile doesn't exist?
-		(let ((olddir default-directory)
-					(topdir (read-directory-name
-										"gtags: top of source tree:" default-directory)))
-			(cd topdir)
-			(shell-command "gtags && echo 'created tagfile'")
-			(cd olddir)) ; restore
-		;;  tagfile already exists; update it
-		(shell-command "global -u && echo 'updated tagfile'")))
-
-(add-hook 'c-mode-common-hook
-					(lambda ()
-						(gtags-create-or-update)))
-
-;; TAGS auto-update
-(defun gtags-update-single (filename)
-	"Update Gtags database for changes in a single file"
-	(interactive)
-	(start-process "update-gtags" "update-gtags" "bash" "-c" (concat "cd " (gtags-root-dir) " ; gtags --single-update " filename )))
-
-(defun gtags-update-current-file()
-	(interactive)
-	(defvar filename)
-	(setq filename (replace-regexp-in-string (gtags-root-dir) "." (buffer-file-name (current-buffer))))
-	(gtags-update-single filename)
-	(message "Gtags updated for %s" filename))
-
-(defun gtags-update-hook()
-	"Update GTAGS file incrementally upon saving a file"
-	(when gtags-mode
-		(when (gtags-root-dir)
-			(gtags-update-current-file))))
-
-(add-hook 'after-save-hook 'gtags-update-hook)
 
 ;; move-window by meta key
 (windmove-default-keybindings 'meta)
@@ -189,3 +176,22 @@
 (define-key ctl-x-map "S" 'save-current-configuration)
 (define-key ctl-x-map "F" 'resume)
 (define-key ctl-x-map "K" 'wipe)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; x-clipboard paste
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+;; set transparency
+(set-frame-parameter nil 'alpha '(80 70))
+(set-background-color "black")
+
+;; magit
+(require 'magit)
+(setq magit-auto-revert-mode nil)
+(setq magit-last-seen-setup-instructions "1.4.0")
