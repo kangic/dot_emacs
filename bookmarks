@@ -1,0 +1,15 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("done.org"
+ (filename . "~/datas/repository/Dropbox/notes/tasks/done.org")
+ (front-context-string . "* DONE connectio")
+ (rear-context-string)
+ (position . 1))
+("todo.org"
+ (filename . "~/datas/repository/Dropbox/notes/tasks/todo.org")
+ (front-context-string . "#+TAGS: { EZNETP")
+ (rear-context-string)
+ (position . 1))
+)

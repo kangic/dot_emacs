@@ -6,6 +6,14 @@
 ; maximize
 ;(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+; org-mode
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+(setq org-agenda-files (list "~/datas/repository/Dropbox/notes/tasks/todo.org"
+			     "~/datas/repository/Dropbox/notes/tasks/done.org"))
+
 ; start auto-complete with emacs
 (require 'auto-complete)
 ; do default config for auto-compelete
@@ -31,7 +39,7 @@
 
 ; ido-mode
 (require 'ido)
-(setq ido-mode 1)
+(ido-mode t)
 
 ; turn on Semantic
 (semantic-mode 1)
@@ -190,7 +198,7 @@
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; set transparency
-(set-frame-parameter nil 'alpha '(80 70))
+;(set-frame-parameter nil 'alpha '(80 70))
 (set-background-color "black")
 
 ;; magit
@@ -198,22 +206,8 @@
 (setq magit-auto-revert-mode nil)
 (setq magit-last-seen-setup-instructions "1.4.0")
 
-;; ecb
-(require 'ecb)
-(require 'ecb-autoloads)
-
-(setq ecb-tip-of-the-day nil)
-(setq ecb-layout-name "left3")
-(setq ecb-show-sources-in-directories-buffer 'always)
-(setq ecb-compile-window-height 6)
-(setq ecb-windows-width 32)
-
-;; customize the keys for ECB
-(define-key ecb-mode-map (kbd "M-1") 'ecb-goto-window-directories)
-(define-key ecb-mode-map (kbd "M-2") 'ecb-goto-window-sources)
-(define-key ecb-mode-map (kbd "M-3") 'ecb-goto-window-methods)
-(define-key ecb-mode-map (kbd "M-4") 'ecb-goto-window-history)
-(define-key ecb-mode-map (kbd "M-5") 'ecb-goto-window-compilation)
-(define-key ecb-mode-map (kbd "M-0") 'ecb-goto-window-edit1)
-
-(ecb-activate)
+;; helm
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(helm-mode 1)
+(helm-autoresize-mode 1)
