@@ -11,8 +11,7 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
-(setq org-agenda-files (list "~/datas/repository/Dropbox/notes/tasks/todo.org"
-			     "~/datas/repository/Dropbox/notes/tasks/done.org"))
+(setq org-agenda-files (list "~/Dropbox/notes/tasks/todo.org"))
 
 ; start auto-complete with emacs
 (require 'auto-complete)
@@ -115,7 +114,8 @@
  '(flymake-google-cpplint-linelength "120")
  '(flymake-google-cpplint-verbose "3")
  '(help-at-pt-display-when-idle (quote (flymake-overlay)) nil (help-at-pt))
- '(help-at-pt-time-delay 0.9))
+ '(help-at-pt-time-delay 0.9)
+ '(org-agenda-files (quote ("~/datas/repository/Dropbox/notes/tasks/todo.org"))))
 
 ; google-c-style
 (require 'google-c-style)
@@ -209,5 +209,9 @@
 ;; helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (helm-mode 1)
 (helm-autoresize-mode 1)
+
+;; scheme
+(set-variable (quote scheme-program-name) "scheme")
