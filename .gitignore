@@ -6,3 +6,4 @@ eshell
 semanticdb
 *.elc
 session.*
+elpa/*
