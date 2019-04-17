@@ -55,7 +55,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; font
-(set-face-font 'default "Bitstream Vera Sans Mono for Powerline-10")
+(set-face-font 'default "Droid Sans Mono for Powerline-10")
 (set-fontset-font "fontset-default" '(#x1100 . #xffdc)
                    "NanumGothic_Coding-15")
 
@@ -89,7 +89,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (multi-term company eyebrowse magit helm-projectile projectile helm levenshtein cmake-mode cmake-project el-get cmake-ide flycheck-irony flycheck company-irony-c-headers company-irony irony helm-rtags company-rtags rtags markdown-mode))))
+    (multi-term company eyebrowse magit helm-projectile projectile helm levenshtein cmake-mode cmake-project el-get cmake-ide flycheck-irony flycheck company-irony-c-headers company-irony irony markdown-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -193,19 +193,6 @@
 (helm-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; rtags
-(require 'rtags)
-(require 'company-rtags)
-
-(setq rtags-completions-enabled t)
-(eval-after-load 'company
-  '(add-to-list
-    'company-backends 'company-rtags))
-(setq rtags-autostart-diagnostics t)
-(rtags-enable-standard-keybindings)
-(rtags-start-process-unless-running)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; irony
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
@@ -261,16 +248,6 @@
 (add-hook 'c-mode-hook 'flycheck-mode)
 
 (global-flycheck-mode)
-
-;; flycheck-rtgas
-(require 'flycheck-rtags)
-
-(defun my-flycheck-rtags-setup ()
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-  (setq-local flycheck-check-syntax-automatically nil))
-;; c-mode-common-hook is also called by c++-mode
-(add-hook 'c-mode-common-hook 'my-flycheck-rtags-setup)
 
 ;; flycheck-irony
 (eval-after-load 'flycheck
