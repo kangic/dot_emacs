@@ -12,7 +12,7 @@
 (package-install 'company)
 (package-install 'company-c-headers)
 (package-install 'projectile)
-
+(package-install 'helm-projectile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package recompile
@@ -66,19 +66,22 @@
 (set-fontset-font "fontset-default" '(#x1100 . #xffdc)
                    "NanumGothic_Coding-15")
 
+;; tramp
+(setq tramp-default-method "ssh")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company
 (add-hook 'after-init-hook 'global-company-mode)
 ; No delay in showing suggestions.
 (setq company-idle-delay 0)
 
+(require 'company)
 (add-to-list 'company-backends 'company-c-headers)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flycheck
 (global-flycheck-mode)
-
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; projectile
@@ -86,4 +89,23 @@
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; projectile
+(require 'helm-projectile)
+(global-set-key (kbd "C-x p") 'helm-projectile)
+
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (projectile company helm-projectile gnu-elpa-keyring-update flycheck company-c-headers))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
